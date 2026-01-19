@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using ModelContextProtocol.Server;
+using SampleMcpServer.Services;
 
 /// <summary>
 /// Sample MCP tools for demonstration purposes.
@@ -7,13 +8,22 @@ using ModelContextProtocol.Server;
 /// </summary>
 internal class CalculadoraTools
 {
+    private readonly ConsultaHistoryService _historyService;
+
+    public CalculadoraTools(ConsultaHistoryService historyService)
+    {
+        _historyService = historyService;
+    }
+
     [McpServerTool]
     [Description("Realiza a soma de dois números.")]
     public double Somar(
         [Description("Primeiro número")] double a,
         [Description("Segundo número")] double b)
     {
-        return a + b;
+        var resultado = a + b;
+        _historyService.AdicionarCalculo("Soma", $"{a} + {b}", resultado);
+        return resultado;
     }
 
     [McpServerTool]
@@ -22,7 +32,9 @@ internal class CalculadoraTools
         [Description("Primeiro número (minuendo)")] double a,
         [Description("Segundo número (subtraendo)")] double b)
     {
-        return a - b;
+        var resultado = a - b;
+        _historyService.AdicionarCalculo("Subtração", $"{a} - {b}", resultado);
+        return resultado;
     }
 
     [McpServerTool]
@@ -31,7 +43,9 @@ internal class CalculadoraTools
         [Description("Primeiro número")] double a,
         [Description("Segundo número")] double b)
     {
-        return a * b;
+        var resultado = a * b;
+        _historyService.AdicionarCalculo("Multiplicação", $"{a} × {b}", resultado);
+        return resultado;
     }
 
     [McpServerTool]
@@ -43,6 +57,8 @@ internal class CalculadoraTools
         if (b == 0)
             throw new ArgumentException("Divisão por zero não é permitida.");
         
-        return a / b;
+        var resultado = a / b;
+        _historyService.AdicionarCalculo("Divisão", $"{a} ÷ {b}", resultado);
+        return resultado;
     }
 }

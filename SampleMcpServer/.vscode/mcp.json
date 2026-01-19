@@ -7,7 +7,18 @@
         "run",
         "--project",
         "SampleMcpServer.csproj"
-      ],
+      ]
+    },
+    "weather-mcp": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "exec",
+        "-i",
+        "weather-mcp-server",
+        "node",
+        "dist/mcp-entry.js"
+      ]
     }
   }
 }

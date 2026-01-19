@@ -51,7 +51,41 @@ To test this MCP server from source code (locally) without using a built MCP ser
 
 ## Testing the MCP Server
 
-Once configured, you can ask Copilot Chat for a random number, for example, `Give me 3 random numbers`. It should prompt you to use the `get_random_number` tool on the `SampleMcpServer` MCP server and show you the results.
+Once configured, you can interact with various features:
+
+### 🔧 Tools
+- **Random Numbers**: `Give me 3 random numbers`
+- **Calculator**: `Calculate 25 * 4 + 10` or `What's 100 divided by 5?`
+- **CEP Lookup**: `What's the address for CEP 01310-100?`
+- **History**: `Show me the CEP query history` or `What are my calculation statistics?`
+
+### 📊 Available Tools
+1. **RetornaNumeroAleatorio** - Generate random numbers
+2. **Somar, Subtrair, Multiplicar, Dividir** - Math operations
+3. **BuscarCep** - Brazilian postal code lookup
+4. **ValidarCep** - Validate CEP format
+5. **ObterHistoricoCep** - View CEP query history
+6. **ObterHistoricoCalculos** - View calculation history
+7. **ObterEstatisticas** - View usage statistics
+8. **BuscarCepNoHistorico** - Search for specific CEP in history
+
+## Features
+
+### 🔧 Core Tools
+- **Calculadora**: Basic math operations (sum, subtract, multiply, divide) with automatic history tracking
+- **CEP Lookup**: Brazilian postal code lookup using ViaCEP API with async operations
+- **Random Number**: Generate random numbers within a specified range
+
+### 📊 History & Analytics
+- **Query History**: Automatic tracking of all CEP queries and calculations
+- **Statistics**: Real-time usage statistics including success/failure rates
+- **History Search**: Search for previous CEP queries
+
+### 🏗️ Architecture Improvements
+- **Dependency Injection**: HttpClient properly configured via DI container
+- **Async/Await**: All I/O operations use async patterns for better performance
+- **History Service**: Centralized singleton service for tracking all operations
+- **Thread-Safe**: Using ConcurrentBag for safe concurrent access
 
 ## Publishing to NuGet.org
 
