@@ -83,7 +83,8 @@ internal class CepTools
         }
         catch (Exception ex)
         {
-            var erroException = $"❌ Erro ao buscar informações do CEP: {ex.Message}";
+            string message = $"{ex.Message} . {ex?.InnerException?.Message}";
+            var erroException = $"❌ Erro ao buscar informações do CEP: {message}";
             _historyService.AdicionarConsultaCep(cep, erroException, false);
             return erroException;
         }

@@ -1,24 +1,8 @@
 {
   "servers": {
     "SampleMcpServer": {
-      "type": "stdio",
-      "command": "dotnet",
-      "args": [
-        "run",
-        "--project",
-        "SampleMcpServer.csproj"
-      ]
-    },
-    "weather-mcp": {
-      "type": "stdio",
-      "command": "docker",
-      "args": [
-        "exec",
-        "-i",
-        "weather-mcp-server",
-        "node",
-        "dist/mcp-entry.js"
-      ]
+      "type": "http",
+      "url": "http://localhost:5000"
     }
   }
 }

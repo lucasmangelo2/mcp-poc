@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  sample-mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sample-mcp-server
+    restart: unless-stopped
+    ports:
+      - "5000:5000"    # Expor porta HTTP
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5000
+      - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+    networks:
+      - mcp-network
+
+networks:
+  mcp-network:
+    driver: bridge
