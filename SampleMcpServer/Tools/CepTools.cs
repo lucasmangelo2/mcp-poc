@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Text.Json;
 using ModelContextProtocol.Server;
+using SampleMcpServer.Models;
 using SampleMcpServer.Services;
 
 /// <summary>
@@ -67,16 +68,20 @@ internal class CepTools
             string uf = root.TryGetProperty("uf", out var ufProp) ? ufProp.GetString() ?? "" : "";
             string ddd = root.TryGetProperty("ddd", out var dddProp) ? dddProp.GetString() ?? "" : "";
 
-            // Formata o resultado
-            var resultado = $@"📍 Informações do CEP: {cep}
+            CepResponse retorno =
+            new CepResponse()
+            {
+                Cep = cep,
+                Logradouro = logradouro,
+                Complemento = complemento,
+                Bairro = bairro,
+                Cidade = localidade,
+                Uf = uf,
+                Ddd = ddd,
+                Cached = false
+            };
 
-🏠 Logradouro: {logradouro}
-{(string.IsNullOrWhiteSpace(complemento) ? "" : $"📝 Complemento: {complemento}\n")}🏘️ Bairro: {bairro}
-🏙️ Cidade: {localidade}
-🗺️ Estado: {uf}
-📞 DDD: {ddd}
-
-✅ Consulta realizada com sucesso!";
+            string resultado = JsonSerializer.Serialize(retorno);
 
             _historyService.AdicionarConsultaCep(cep, resultado, true);
             return resultado;
