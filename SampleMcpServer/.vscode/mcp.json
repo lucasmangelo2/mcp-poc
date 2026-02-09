@@ -4,9 +4,10 @@
       "type": "stdio",
       "command": "dotnet",
       "args": [
+        "watch",
         "run",
         "--project",
-        "SampleMcpServer.csproj"
+        "D:\\Repositórios\\mcp-poc\\SampleMcpServer\\SampleMcpServer.csproj"
       ]
     },
     "weather-mcp": {
