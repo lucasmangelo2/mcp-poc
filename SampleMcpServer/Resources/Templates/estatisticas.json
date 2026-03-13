@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Estatísticas do Servidor MCP",
+  "description": "Template para estruturar as estatísticas de uso do servidor",
+  "type": "object",
+  "properties": {
+    "servidor": {
+      "type": "object",
+      "description": "Informações sobre o servidor",
+      "properties": {
+        "nome": {
+          "type": "string",
+          "description": "Nome do servidor"
+        },
+        "versao": {
+          "type": "string",
+          "description": "Versão do servidor"
+        },
+        "uptime": {
+          "type": "object",
+          "properties": {
+            "segundos": {
+              "type": "number"
+            },
+            "formatado": {
+              "type": "string",
+              "description": "Tempo formatado (ex: 2d 5h 30m)"
+            }
+          }
+        },
+        "iniciado_em": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "consultas_cep": {
+      "type": "object",
+      "description": "Estatísticas de consultas CEP",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "description": "Total de consultas realizadas"
+        },
+        "sucessos": {
+          "type": "integer",
+          "description": "Número de consultas bem-sucedidas"
+        },
+        "falhas": {
+          "type": "integer",
+          "description": "Número de consultas que falharam"
+        },
+        "taxa_sucesso": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Porcentagem de sucesso"
+        }
+      },
+      "required": ["total", "sucessos", "falhas", "taxa_sucesso"]
+    },
+    "calculos": {
+      "type": "object",
+      "description": "Estatísticas de cálculos",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "description": "Total de cálculos realizados"
+        },
+        "por_operacao": {
+          "type": "object",
+          "description": "Contagem por tipo de operação",
+          "properties": {
+            "soma": {
+              "type": "integer"
+            },
+            "subtracao": {
+              "type": "integer"
+            },
+            "multiplicacao": {
+              "type": "integer"
+            },
+            "divisao": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "required": ["total"]
+    },
+    "numeros_aleatorios": {
+      "type": "object",
+      "description": "Estatísticas de números aleatórios gerados",
+      "properties": {
+        "total_gerado": {
+          "type": "integer"
+        }
+      }
+    },
+    "sistema": {
+      "type": "object",
+      "description": "Informações do sistema",
+      "properties": {
+        "memoria_mb": {
+          "type": "number",
+          "description": "Memória em uso (MB)"
+        },
+        "threads": {
+          "type": "integer",
+          "description": "Número de threads ativas"
+        },
+        "processadores": {
+          "type": "integer",
+          "description": "Número de processadores disponíveis"
+        }
+      }
+    },
+    "ultima_atualizacao": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp da última atualização das estatísticas"
+    }
+  },
+  "required": ["servidor", "consultas_cep", "calculos", "ultima_atualizacao"],
+  "example": {
+    "servidor": {
+      "nome": "SampleMcpServer",
+      "versao": "0.1.0",
+      "uptime": {
+        "segundos": 18630,
+        "formatado": "0d 5h 10m"
+      },
+      "iniciado_em": "2026-02-09T09:20:00Z"
+    },
+    "consultas_cep": {
+      "total": 42,
+      "sucessos": 38,
+      "falhas": 4,
+      "taxa_sucesso": 90.48
+    },
+    "calculos": {
+      "total": 156,
+      "por_operacao": {
+        "soma": 45,
+        "subtracao": 32,
+        "multiplicacao": 38,
+        "divisao": 41
+      }
+    },
+    "numeros_aleatorios": {
+      "total_gerado": 23
+    },
+    "sistema": {
+      "memoria_mb": 45.2,
+      "threads": 12,
+      "processadores": 8
+    },
+    "ultima_atualizacao": "2026-02-09T14:30:00Z"
+  }
+}

@@ -9,6 +9,12 @@ public class ConsultaHistoryService
 {
     private readonly ConcurrentBag<CepConsulta> _cepHistory = new();
     private readonly ConcurrentBag<CalculoRealizado> _calculoHistory = new();
+    private readonly TimeZoneService _timeZoneService;
+
+    public ConsultaHistoryService(TimeZoneService timeZoneService)
+    {
+        _timeZoneService = timeZoneService;
+    }
 
     public void AdicionarConsultaCep(string cep, string resultado, bool sucesso)
     {
@@ -16,7 +22,7 @@ public class ConsultaHistoryService
         {
             Cep = cep,
             Resultado = resultado,
-            DataConsulta = DateTime.Now,
+            DataConsulta = _timeZoneService.Agora,
             Sucesso = sucesso
         });
     }
@@ -28,7 +34,7 @@ public class ConsultaHistoryService
             Operacao = operacao,
             Expressao = expressao,
             Resultado = resultado,
-            DataCalculo = DateTime.Now
+            DataCalculo = _timeZoneService.Agora
         });
     }
 

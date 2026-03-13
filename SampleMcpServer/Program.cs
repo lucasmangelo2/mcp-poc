@@ -1,13 +1,22 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SampleMcpServer.Prompts;
+using SampleMcpServer.Resources;
 using SampleMcpServer.Services;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configurar cultura brasileira para toda a aplicação
+var culturaBrasil = new CultureInfo("pt-BR");
+CultureInfo.DefaultThreadCurrentCulture = culturaBrasil;
+CultureInfo.DefaultThreadCurrentUICulture = culturaBrasil;
 
 // Configure all logs to go to stderr
 builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = LogLevel.Trace);
 
 // Registrar serviços
+builder.Services.AddSingleton<TimeZoneService>();
 builder.Services.AddSingleton<ConsultaHistoryService>();
 
 // Configurar HttpClient para CepTools
@@ -24,7 +33,11 @@ builder.Services
     .WithTools<NumeroAleatorioTools>()
     .WithTools<CalculadoraTools>()
     .WithTools<CepTools>()
-    .WithTools<HistoricoTools>();
+    .WithResources<DocumentacaoResources>()
+    .WithResources<HistoricoResources>()
+    .WithPrompts<AnaliticoPrompts>()
+    .WithPrompts<EducacionalPrompts>()
+    .WithPrompts<ValidacaoPrompts>();
 
 var app = builder.Build();
 

@@ -3,6 +3,17 @@
     "SampleMcpServer": {
       "type": "http",
       "url": "http://localhost:5000"
+    },
+    "weather-mcp": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "exec",
+        "-i",
+        "weather-mcp-server",
+        "node",
+        "dist/mcp-entry.js"
+      ]
     }
   }
 }

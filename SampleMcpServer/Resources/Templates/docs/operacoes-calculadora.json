@@ -1,0 +1,210 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Documentação: Operações da Calculadora",
+  "description": "Especificação das operações matemáticas disponíveis",
+  "type": "object",
+  "properties": {
+    "operacoes": {
+      "type": "array",
+      "description": "Lista de operações matemáticas suportadas",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "enum": ["soma", "subtracao", "multiplicacao", "divisao"]
+          },
+          "simbolo": {
+            "type": "string"
+          },
+          "metodo": {
+            "type": "string",
+            "description": "Nome do método/tool"
+          },
+          "parametros": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "tipo": {
+                  "type": "string"
+                },
+                "descricao": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "exemplos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "entrada": {
+                  "type": "object"
+                },
+                "saida": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "restricoes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["tipo", "simbolo", "metodo", "descricao"]
+      }
+    },
+    "caracteristicas": {
+      "type": "object",
+      "properties": {
+        "tipo_numerico": {
+          "type": "string",
+          "description": "Tipo de dado usado para números"
+        },
+        "precisao": {
+          "type": "string",
+          "description": "Precisão dos cálculos"
+        },
+        "historico": {
+          "type": "boolean",
+          "description": "Se os cálculos são salvos em histórico"
+        }
+      }
+    }
+  },
+  "example": {
+    "operacoes": [
+      {
+        "tipo": "soma",
+        "simbolo": "+",
+        "metodo": "Somar",
+        "parametros": [
+          {
+            "nome": "a",
+            "tipo": "number",
+            "descricao": "Primeiro número"
+          },
+          {
+            "nome": "b",
+            "tipo": "number",
+            "descricao": "Segundo número"
+          }
+        ],
+        "descricao": "Realiza a adição de dois números",
+        "exemplos": [
+          {
+            "entrada": { "a": 5, "b": 3 },
+            "saida": 8
+          },
+          {
+            "entrada": { "a": 10.5, "b": 2.3 },
+            "saida": 12.8
+          }
+        ]
+      },
+      {
+        "tipo": "subtracao",
+        "simbolo": "-",
+        "metodo": "Subtrair",
+        "parametros": [
+          {
+            "nome": "a",
+            "tipo": "number",
+            "descricao": "Minuendo"
+          },
+          {
+            "nome": "b",
+            "tipo": "number",
+            "descricao": "Subtraendo"
+          }
+        ],
+        "descricao": "Realiza a subtração de dois números",
+        "exemplos": [
+          {
+            "entrada": { "a": 10, "b": 4 },
+            "saida": 6
+          },
+          {
+            "entrada": { "a": 5.5, "b": 2.2 },
+            "saida": 3.3
+          }
+        ]
+      },
+      {
+        "tipo": "multiplicacao",
+        "simbolo": "×",
+        "metodo": "Multiplicar",
+        "parametros": [
+          {
+            "nome": "a",
+            "tipo": "number",
+            "descricao": "Primeiro número"
+          },
+          {
+            "nome": "b",
+            "tipo": "number",
+            "descricao": "Segundo número"
+          }
+        ],
+        "descricao": "Realiza a multiplicação de dois números",
+        "exemplos": [
+          {
+            "entrada": { "a": 6, "b": 7 },
+            "saida": 42
+          },
+          {
+            "entrada": { "a": 2.5, "b": 4 },
+            "saida": 10
+          }
+        ]
+      },
+      {
+        "tipo": "divisao",
+        "simbolo": "÷",
+        "metodo": "Dividir",
+        "parametros": [
+          {
+            "nome": "a",
+            "tipo": "number",
+            "descricao": "Dividendo"
+          },
+          {
+            "nome": "b",
+            "tipo": "number",
+            "descricao": "Divisor"
+          }
+        ],
+        "descricao": "Realiza a divisão de dois números",
+        "exemplos": [
+          {
+            "entrada": { "a": 20, "b": 4 },
+            "saida": 5
+          },
+          {
+            "entrada": { "a": 15, "b": 2 },
+            "saida": 7.5
+          }
+        ],
+        "restricoes": [
+          "O divisor (b) não pode ser zero"
+        ]
+      }
+    ],
+    "caracteristicas": {
+      "tipo_numerico": "double",
+      "precisao": "64 bits (IEEE 754)",
+      "historico": true
+    }
+  }
+}

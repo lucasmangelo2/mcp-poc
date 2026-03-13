@@ -1,0 +1,189 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Health Check do Servidor",
+  "description": "Template para estruturar o status de saúde do servidor MCP",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["healthy", "degraded", "unhealthy"],
+      "description": "Status geral de saúde do servidor"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Momento da verificação"
+    },
+    "uptime": {
+      "type": "object",
+      "properties": {
+        "segundos": {
+          "type": "number"
+        },
+        "formatado": {
+          "type": "string"
+        },
+        "iniciado_em": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["segundos", "formatado", "iniciado_em"]
+    },
+    "recursos": {
+      "type": "object",
+      "description": "Status dos recursos do sistema",
+      "properties": {
+        "memoria": {
+          "type": "object",
+          "properties": {
+            "uso_mb": {
+              "type": "number",
+              "description": "Memória em uso (MB)"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["normal", "elevado", "critico"]
+            },
+            "limite_normal_mb": {
+              "type": "number",
+              "const": 500
+            },
+            "limite_critico_mb": {
+              "type": "number",
+              "const": 1000
+            }
+          },
+          "required": ["uso_mb", "status"]
+        },
+        "threads": {
+          "type": "object",
+          "properties": {
+            "ativas": {
+              "type": "integer"
+            },
+            "pool_disponiveis": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "servicos": {
+      "type": "object",
+      "description": "Status dos serviços internos",
+      "properties": {
+        "consulta_history_service": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["ativo", "inativo", "erro"]
+            }
+          }
+        },
+        "http_client": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["configurado", "erro"]
+            },
+            "timeout_segundos": {
+              "type": "integer"
+            }
+          }
+        },
+        "mcp_server": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["rodando", "parado", "erro"]
+            },
+            "transporte": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "conectividade": {
+      "type": "object",
+      "properties": {
+        "rede": {
+          "type": "string",
+          "enum": ["ok", "limitada", "offline"]
+        },
+        "dns": {
+          "type": "string",
+          "enum": ["funcional", "erro"]
+        }
+      }
+    },
+    "endpoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["disponivel", "indisponivel"]
+          }
+        }
+      }
+    }
+  },
+  "required": ["status", "timestamp", "uptime", "recursos", "servicos"],
+  "example": {
+    "status": "healthy",
+    "timestamp": "2026-02-09T14:30:00Z",
+    "uptime": {
+      "segundos": 18630,
+      "formatado": "0d 5h 10m",
+      "iniciado_em": "2026-02-09T09:20:00Z"
+    },
+    "recursos": {
+      "memoria": {
+        "uso_mb": 45.2,
+        "status": "normal",
+        "limite_normal_mb": 500,
+        "limite_critico_mb": 1000
+      },
+      "threads": {
+        "ativas": 12,
+        "pool_disponiveis": 0
+      }
+    },
+    "servicos": {
+      "consulta_history_service": {
+        "status": "ativo"
+      },
+      "http_client": {
+        "status": "configurado",
+        "timeout_segundos": 30
+      },
+      "mcp_server": {
+        "status": "rodando",
+        "transporte": "HTTP"
+      }
+    },
+    "conectividade": {
+      "rede": "ok",
+      "dns": "funcional"
+    },
+    "endpoints": [
+      {
+        "nome": "MCP",
+        "status": "disponivel"
+      },
+      {
+        "nome": "Health",
+        "status": "disponivel"
+      }
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Histórico de Consultas CEP",
+  "description": "Template para estruturar o histórico de consultas de CEP",
+  "type": "object",
+  "properties": {
+    "total_consultas": {
+      "type": "integer",
+      "description": "Número total de consultas realizadas"
+    },
+    "consultas": {
+      "type": "array",
+      "description": "Lista de consultas realizadas",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cep": {
+            "type": "string",
+            "pattern": "^[0-9]{5}-?[0-9]{3}$",
+            "description": "CEP consultado"
+          },
+          "data_consulta": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data e hora da consulta"
+          },
+          "sucesso": {
+            "type": "boolean",
+            "description": "Indica se a consulta foi bem-sucedida"
+          },
+          "resultado": {
+            "type": "object",
+            "description": "Dados retornados pela consulta (quando sucesso)",
+            "properties": {
+              "logradouro": {
+                "type": "string"
+              },
+              "complemento": {
+                "type": "string"
+              },
+              "bairro": {
+                "type": "string"
+              },
+              "localidade": {
+                "type": "string"
+              },
+              "uf": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2
+              },
+              "ddd": {
+                "type": "string"
+              }
+            }
+          },
+          "erro": {
+            "type": "string",
+            "description": "Mensagem de erro (quando falha)"
+          }
+        },
+        "required": ["cep", "data_consulta", "sucesso"]
+      }
+    }
+  },
+  "required": ["total_consultas", "consultas"],
+  "example": {
+    "total_consultas": 3,
+    "consultas": [
+      {
+        "cep": "01310-100",
+        "data_consulta": "2026-02-09T14:30:00Z",
+        "sucesso": true,
+        "resultado": {
+          "logradouro": "Avenida Paulista",
+          "bairro": "Bela Vista",
+          "localidade": "São Paulo",
+          "uf": "SP",
+          "ddd": "11"
+        }
+      },
+      {
+        "cep": "20040-020",
+        "data_consulta": "2026-02-09T14:25:00Z",
+        "sucesso": true,
+        "resultado": {
+          "logradouro": "Avenida Rio Branco",
+          "bairro": "Centro",
+          "localidade": "Rio de Janeiro",
+          "uf": "RJ",
+          "ddd": "21"
+        }
+      },
+      {
+        "cep": "00000-000",
+        "data_consulta": "2026-02-09T14:20:00Z",
+        "sucesso": false,
+        "erro": "CEP não encontrado"
+      }
+    ]
+  }
+}

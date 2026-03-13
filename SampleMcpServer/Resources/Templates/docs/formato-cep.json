@@ -1,0 +1,157 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Documentação: Formato de CEP",
+  "description": "Especificação do formato de CEP brasileiro aceito pelo servidor",
+  "type": "object",
+  "properties": {
+    "formato": {
+      "type": "object",
+      "properties": {
+        "descricao": {
+          "type": "string",
+          "const": "CEP (Código de Endereçamento Postal) brasileiro"
+        },
+        "digitos": {
+          "type": "integer",
+          "const": 8,
+          "description": "Número exato de dígitos numéricos"
+        },
+        "formatos_aceitos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "formato": {
+                "type": "string"
+              },
+              "exemplo": {
+                "type": "string"
+              },
+              "regex": {
+                "type": "string"
+              }
+            }
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "validacao": {
+      "type": "object",
+      "properties": {
+        "regras": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "exemplos": {
+      "type": "object",
+      "properties": {
+        "validos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9]{5}-?[0-9]{3}$"
+          }
+        },
+        "invalidos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "valor": {
+                "type": "string"
+              },
+              "motivo": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "api": {
+      "type": "object",
+      "properties": {
+        "provedor": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "campos_retornados": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "example": {
+    "formato": {
+      "descricao": "CEP (Código de Endereçamento Postal) brasileiro",
+      "digitos": 8,
+      "formatos_aceitos": [
+        {
+          "formato": "XXXXX-XXX",
+          "exemplo": "01310-100",
+          "regex": "^[0-9]{5}-[0-9]{3}$"
+        },
+        {
+          "formato": "XXXXXXXX",
+          "exemplo": "01310100",
+          "regex": "^[0-9]{8}$"
+        }
+      ]
+    },
+    "validacao": {
+      "regras": [
+        "Deve conter exatamente 8 dígitos",
+        "Pode conter hífen após o 5º dígito",
+        "Apenas números são aceitos",
+        "Espaços são automaticamente removidos"
+      ]
+    },
+    "exemplos": {
+      "validos": [
+        "01310-100",
+        "01310100",
+        "20040-020",
+        "80530-000"
+      ],
+      "invalidos": [
+        {
+          "valor": "1234-567",
+          "motivo": "Menos de 8 dígitos"
+        },
+        {
+          "valor": "01310-ABC",
+          "motivo": "Contém letras"
+        },
+        {
+          "valor": "01310 100",
+          "motivo": "Contém espaço (deve usar hífen)"
+        }
+      ]
+    },
+    "api": {
+      "provedor": "ViaCEP",
+      "url": "https://viacep.com.br",
+      "campos_retornados": [
+        "cep",
+        "logradouro",
+        "complemento",
+        "bairro",
+        "localidade",
+        "uf",
+        "ddd"
+      ]
+    }
+  }
+}
