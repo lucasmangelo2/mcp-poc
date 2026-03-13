@@ -1,132 +1,108 @@
-# MCP Server
+# SampleMcpServer
 
-This README was created using the C# MCP server project template.
-It demonstrates how you can easily create an MCP server using C# and publish it as a NuGet package.
+Servidor MCP em C# (.NET 9) com foco em três grupos de funcionalidades:
 
-The MCP server is built as a self-contained application and does not require the .NET runtime to be installed on the target machine.
-However, since it is self-contained, it must be built for each target platform separately.
-By default, the template is configured to build for:
-* `win-x64`
-* `win-arm64`
-* `osx-arm64`
-* `linux-x64`
-* `linux-arm64`
-* `linux-musl-x64`
+- consulta e validacao de CEP brasileiro (ViaCEP)
+- operacoes matematicas basicas
+- historico, estatisticas, documentacao e prompts prontos para analise
 
-If your users require more platforms to be supported, update the list of runtime identifiers in the project's `<RuntimeIdentifiers />` element.
+O projeto sobe via HTTP na porta `5000` e expoe endpoint MCP com `MapMcp()`.
 
-See [aka.ms/nuget/mcp/guide](https://aka.ms/nuget/mcp/guide) for the full guide.
+## O que este servidor entrega hoje
 
-Please note that this template is currently in an early preview stage. If you have feedback, please take a [brief survey](http://aka.ms/dotnet-mcp-template-survey).
+### Tools
+- `RetornaNumeroAleatorio(min, max)`
+- `Somar(a, b)`
+- `Subtrair(a, b)`
+- `Multiplicar(a, b)`
+- `Dividir(a, b)`
+- `BuscarCepAsync(cep)`
+- `ValidarCep(cep)`
 
-## Checklist before publishing to NuGet.org
+### Resources
+- `ObterHistoricoCep()`
+- `ObterHistoricoCalculos()`
+- `ObterEstatisticas()`
+- `BuscarCepNoHistorico(cep)`
+- `InformacoesServidor()`
+- `HealthCheck()`
+- `FormatoCep()`
+- `OperacoesCalculadora()`
+- `ExemplosUso()`
+- `ListaFerramentas()`
 
-- Test the MCP server locally using the steps below.
-- Update the package metadata in the .csproj file, in particular the `<PackageId>`.
-- Update `.mcp/server.json` to declare your MCP server's inputs.
-  - See [configuring inputs](https://aka.ms/nuget/mcp/guide/configuring-inputs) for more details.
-- Pack the project using `dotnet pack`.
+### Prompts
+- `RelatorioConsultasCEP()`
+- `AnaliseHistoricoCalculos()`
+- `SumarioEstatisticas()`
+- `ComparacaoRegioes()`
+- `ExplicacaoMatematica(operacao)`
+- `ValidacaoDados(ceps)`
 
-The `bin/Release` directory will contain the package file (.nupkg), which can be [published to NuGet.org](https://learn.microsoft.com/nuget/nuget-org/publish-a-package).
+## Subindo com Docker (caminho recomendado)
 
-## Developing locally
+Com Docker e Docker Compose instalados, execute na raiz do projeto:
 
-To test this MCP server from source code (locally) without using a built MCP server package, you can configure your IDE to run the project directly using `dotnet run`.
-
-```json
-{
-  "servers": {
-    "SampleMcpServer": {
-      "type": "stdio",
-      "command": "dotnet",
-      "args": [
-        "run",
-        "--project",
-        "<PATH TO PROJECT DIRECTORY>"
-      ]
-    }
-  }
-}
+```bash
+docker-compose -f docker-compose.yaml up --build
 ```
 
-## Testing the MCP Server
+O servico sera publicado em:
 
-Once configured, you can interact with various features:
+- `http://localhost:5000`
 
-### 🔧 Tools
-- **Random Numbers**: `Give me 3 random numbers`
-- **Calculator**: `Calculate 25 * 4 + 10` or `What's 100 divided by 5?`
-- **CEP Lookup**: `What's the address for CEP 01310-100?`
-- **History**: `Show me the CEP query history` or `What are my calculation statistics?`
+Para parar:
 
-### 📊 Available Tools
-1. **RetornaNumeroAleatorio** - Generate random numbers
-2. **Somar, Subtrair, Multiplicar, Dividir** - Math operations
-3. **BuscarCep** - Brazilian postal code lookup
-4. **ValidarCep** - Validate CEP format
-5. **ObterHistoricoCep** - View CEP query history
-6. **ObterHistoricoCalculos** - View calculation history
-7. **ObterEstatisticas** - View usage statistics
-8. **BuscarCepNoHistorico** - Search for specific CEP in history
-
-## Features
-
-### 🔧 Core Tools
-- **Calculadora**: Basic math operations (sum, subtract, multiply, divide) with automatic history tracking
-- **CEP Lookup**: Brazilian postal code lookup using ViaCEP API with async operations
-- **Random Number**: Generate random numbers within a specified range
-
-### 📊 History & Analytics
-- **Query History**: Automatic tracking of all CEP queries and calculations
-- **Statistics**: Real-time usage statistics including success/failure rates
-- **History Search**: Search for previous CEP queries
-
-### 🏗️ Architecture Improvements
-- **Dependency Injection**: HttpClient properly configured via DI container
-- **Async/Await**: All I/O operations use async patterns for better performance
-- **History Service**: Centralized singleton service for tracking all operations
-- **Thread-Safe**: Using ConcurrentBag for safe concurrent access
-
-## Publishing to NuGet.org
-
-1. Run `dotnet pack -c Release` to create the NuGet package
-2. Publish to NuGet.org with `dotnet nuget push bin/Release/*.nupkg --api-key <your-api-key> --source https://api.nuget.org/v3/index.json`
-
-## Using the MCP Server from NuGet.org
-
-Once the MCP server package is published to NuGet.org, you can configure it in your preferred IDE. Both VS Code and Visual Studio use the `dnx` command to download and install the MCP server package from NuGet.org.
-
-- **VS Code**: Create a `<WORKSPACE DIRECTORY>/.vscode/mcp.json` file
-- **Visual Studio**: Create a `<SOLUTION DIRECTORY>\.mcp.json` file
-
-For both VS Code and Visual Studio, the configuration file uses the following server definition:
-
-```json
-{
-  "servers": {
-    "SampleMcpServer": {
-      "type": "stdio",
-      "command": "dnx",
-      "args": [
-        "<your package ID here>",
-        "--version",
-        "<your package version here>",
-        "--yes"
-      ]
-    }
-  }
-}
+```bash
+docker-compose -f docker-compose.yaml down
 ```
 
-## More information
+## Como testar rápido
 
-.NET MCP servers use the [ModelContextProtocol](https://www.nuget.org/packages/ModelContextProtocol) C# SDK. For more information about MCP:
+Depois de subir o container, conecte um cliente MCP apontando para o servidor HTTP e teste chamadas como:
 
-- [Official Documentation](https://modelcontextprotocol.io/)
-- [Protocol Specification](https://spec.modelcontextprotocol.io/)
-- [GitHub Organization](https://github.com/modelcontextprotocol)
+- `ValidarCep("01310-100")`
+- `BuscarCepAsync("01310100")`
+- `Somar(25, 4)`
+- `ObterEstatisticas()`
+- `HealthCheck()`
 
-Refer to the VS Code or Visual Studio documentation for more information on configuring and using MCP servers:
+## Execucao local sem Docker (opcional)
 
-- [Use MCP servers in VS Code (Preview)](https://code.visualstudio.com/docs/copilot/chat/mcp-servers)
-- [Use MCP servers in Visual Studio (Preview)](https://learn.microsoft.com/visualstudio/ide/mcp-servers)
+Se preferir rodar localmente:
+
+```bash
+dotnet run
+```
+
+## Estrutura resumida
+
+- `Tools/`: acoes executaveis pelo cliente MCP
+- `Resources/`: dados e consultas de apoio (historico, status, docs)
+- `Prompts/`: templates para analise, validacao e explicacoes
+- `Services/`: servicos internos (historico e fuso horario)
+- `Models/`: modelos de dados
+
+## Detalhes tecnicos
+
+- .NET 9 com `ModelContextProtocol`
+- transporte MCP em HTTP (`WithHttpTransport`)
+- `HttpClient` via DI para consumo do ViaCEP
+- cultura padrao definida para `pt-BR`
+- historico de consultas e calculos centralizado em servico singleton
+
+## Publicacao de pacote (quando fizer sentido)
+
+Para empacotar:
+
+```bash
+dotnet pack -c Release
+```
+
+O `.nupkg` sera gerado em `bin/Release`.
+
+## Referencias
+
+- [Documentacao oficial do MCP](https://modelcontextprotocol.io/)
+- [Especificacao do protocolo](https://spec.modelcontextprotocol.io/)
+- [SDK C# ModelContextProtocol no NuGet](https://www.nuget.org/packages/ModelContextProtocol)
